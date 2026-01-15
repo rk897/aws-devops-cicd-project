@@ -3,6 +3,6 @@ app = Flask(__name__)
 
 @app.route("/")
 def hello():
-    return "CI/CD Pipeline Success!"
+    return "AUTO DEPLOY SUCCESS!"
 
 app.run(host="0.0.0.0", port=5000)
