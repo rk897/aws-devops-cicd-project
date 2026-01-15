@@ -1,10 +1,8 @@
-const express = require('express');
-const app = express();
+from flask import Flask
+app = Flask(__name__)
 
-app.get('/', (req, res) => {
-  res.send('CI/CD Pipeline Deployed Successfully 🚀');
-});
+@app.route("/")
+def hello():
+    return "CI/CD Pipeline Success!"
 
-app.listen(3000, () => {
-  console.log("Server running on port 3000");
-});
+app.run(host="0.0.0.0", port=5000)
