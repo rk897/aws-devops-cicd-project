@@ -1,8 +1,10 @@
-from flask import Flask
-app = Flask(__name__)
+const express = require("express");
+const app = express();
 
-@app.route("/")
-def hello():
-    return "VERSION 2 - AUTO DEPLOY WORKING!"
+app.get("/", (req, res) => {
+  res.send("VERSION 2 - NODE CI/CD AUTO DEPLOY WORKING!");
+});
 
-app.run(host="0.0.0.0", port=5000)
+app.listen(5000, () => {
+  console.log("Server running on port 5000");
+});
