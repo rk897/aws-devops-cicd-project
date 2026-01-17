@@ -14,26 +14,27 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v3
 
-      # Step 2: Login to AWS ECR
+      # Step 2: Configure AWS Credentials
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
+          aws-region: ap-south-1
 
+      # Step 3: Login to Amazon ECR
       - name: Login to Amazon ECR
         id: ecr-login
         uses: aws-actions/amazon-ecr-login@v1
 
-      # Step 3: Build Docker image
-      - name: Build Docker Image
+      # Step 4: Build and Push Docker Image
+      - name: Build and Push Docker Image
         run: |
-          IMAGE_URI=123456789012.dkr.ecr.us-east-1.amazonaws.com/devops-app:latest
+          IMAGE_URI=${{ secrets.ECR_URI }}
           docker build -t $IMAGE_URI ./docker
           docker push $IMAGE_URI
 
-      # Step 4: Deploy to EC2
+      # Step 5: Deploy to EC2
       - name: Deploy to EC2
         uses: appleboy/ssh-action@v0.1.7
         with:
@@ -42,7 +43,7 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           port: 22
           script: |
-            docker pull 123456789012.dkr.ecr.us-east-1.amazonaws.com/devops-app:latest
+            docker pull ${{ secrets.ECR_URI }}
             docker stop myapp || true
             docker rm myapp || true
-            docker run -d --name myapp -p 80:80 123456789012.dkr.ecr.us-east-1.amazonaws.com/devops-app:latest
+            docker run -d --name myapp -p 80:80 ${{ secrets.ECR_URI }}
