@@ -1,0 +1,8 @@
+CREATE DATABASE devopsdb;
+
+USE devopsdb;
+
+CREATE TABLE visits (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    visit_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
