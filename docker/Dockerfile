@@ -1,14 +1,7 @@
-# Base image
-FROM php:8.2-apache
+FROM php:8.1-apache
 
-# Copy app files
-COPY ../app/ /var/www/html/
-
-# Install MySQL extension
 RUN docker-php-ext-install mysqli
 
-# Expose port
-EXPOSE 80
+COPY app/ /var/www/html/
 
-# Start Apache in foreground
-CMD ["apache2-foreground"]
+EXPOSE 80
